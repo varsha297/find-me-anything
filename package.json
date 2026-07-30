@@ -1,0 +1,17 @@
+{
+  "name": "agentops",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @agentops/web --filter @agentops/api dev",
+    "dev:web": "pnpm --filter @agentops/web dev",
+    "dev:api": "pnpm --filter @agentops/api dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

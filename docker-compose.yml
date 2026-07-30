@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg18
+    container_name: agentops-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: agentops
+      POSTGRES_USER: agentops
+      POSTGRES_PASSWORD: agentops_dev_password
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - agentops_postgres_data:/var/lib/postgresql
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agentops -d agentops"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  agentops_postgres_data:
