@@ -1,27 +1,46 @@
-import { app } from "./app.js";
-import { env } from "./config/env.js";
-import { database } from "./database/client.js";
+import { app } from "./app.ts";
+import { env } from "./config/env.ts";
+import { checkDatabaseConnection, closeDatabasePool } from "./database/pool.ts";
 
-const server = app.listen(env.PORT, () => {
-  console.log(`AgentOps API listening on http://localhost:${env.PORT}`);
-});
+async function startServer(): Promise<void> {
+  await checkDatabaseConnection();
 
-const shutdown = (signal: string): void => {
-  console.log(`${signal} received. Shutting down...`);
-
-  server.close(() => {
-    void database
-      .end()
-      .then(() => {
-        console.log("Database connections closed");
-        process.exit(0);
-      })
-      .catch((error: unknown) => {
-        console.error("Shutdown failed:", error);
-        process.exit(1);
-      });
+  const server = app.listen(env.PORT, () => {
+    console.log(`API running at http://localhost:${env.PORT}`);
   });
-};
 
-process.on("SIGTERM", () => shutdown("SIGTERM"));
-process.on("SIGINT", () => shutdown("SIGINT"));
+  async function shutdown(signal: string): Promise<void> {
+    console.log(`${signal} received. Shutting down...`);
+
+    server.close(async (serverError) => {
+      if (serverError) {
+        console.error("Failed to close HTTP server:", serverError);
+
+        process.exitCode = 1;
+      }
+
+      try {
+        await closeDatabasePool();
+      } catch (databaseError) {
+        console.error("Failed to close PostgreSQL pool:", databaseError);
+
+        process.exitCode = 1;
+      }
+
+      process.exit();
+    });
+  }
+
+  process.on("SIGINT", () => {
+    void shutdown("SIGINT");
+  });
+
+  process.on("SIGTERM", () => {
+    void shutdown("SIGTERM");
+  });
+}
+
+startServer().catch((error: unknown) => {
+  console.error("Failed to start API:", error);
+  process.exit(1);
+});
