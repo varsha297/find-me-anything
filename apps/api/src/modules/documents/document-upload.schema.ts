@@ -50,3 +50,32 @@ export const createUploadSessionSchema = z
 export type CreateUploadSessionInput = z.infer<
   typeof createUploadSessionSchema
 >;
+
+export const createMultipleUploadSessionsSchema = z
+  .object({
+    files: z
+      .array(createUploadSessionSchema)
+      .min(1, "Select at least one file")
+      .max(
+        env.MAX_FILES_PER_BATCH,
+        `You can upload at most ${env.MAX_FILES_PER_BATCH} files`,
+      ),
+  })
+  .superRefine((value, context) => {
+    const totalSizeBytes = value.files.reduce(
+      (total, file) => total + file.sizeBytes,
+      0,
+    );
+
+    if (totalSizeBytes > env.MAX_BATCH_UPLOAD_SIZE_BYTES) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["files"],
+        message: "The total batch size exceeds the allowed limit.",
+      });
+    }
+  });
+
+export type CreateMultipleUploadSessionsInput = z.infer<
+  typeof createMultipleUploadSessionsSchema
+>;

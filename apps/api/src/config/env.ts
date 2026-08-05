@@ -31,6 +31,14 @@ const environmentSchema = z.object({
     .positive()
     .default(25 * 1024 * 1024),
 
+  MAX_FILES_PER_BATCH: z.coerce.number().int().min(2).max(50).default(10),
+
+  MAX_BATCH_UPLOAD_SIZE_BYTES: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(100 * 1024 * 1024),
+
   LOCAL_DEV_USER_ID: z.string().uuid("LOCAL_DEV_USER_ID must be a valid UUID"),
 });
 

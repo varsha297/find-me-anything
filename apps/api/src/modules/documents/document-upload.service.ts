@@ -48,31 +48,31 @@ export async function createDocumentUploadSession(
   try {
     await pool.query(
       `
-    INSERT INTO documents (
-      id,
-      owner_id,
-      original_name,
-      sanitized_name,
-      mime_type,
-      size_bytes,
-      s3_bucket,
-      s3_key,
-      upload_status,
-      processing_status
-    )
-    VALUES (
-      $1,
-      $2,
-      $3,
-      $4,
-      $5,
-      $6,
-      $7,
-      $8,
-      'pending',
-      'not_started'
-    )
-  `,
+        INSERT INTO documents (
+          id,
+          owner_id,
+          original_name,
+          sanitized_name,
+          mime_type,
+          size_bytes,
+          s3_bucket,
+          s3_key,
+          upload_status,
+          processing_status
+        )
+        VALUES (
+          $1,
+          $2,
+          $3,
+          $4,
+          $5,
+          $6,
+          $7,
+          $8,
+          'pending',
+          'not_started'
+        )
+      `,
       [
         documentId,
         ownerId,
@@ -95,9 +95,7 @@ export async function createDocumentUploadSession(
 
       Fields: {
         "Content-Type": input.mimeType,
-
         "x-amz-meta-document-id": documentId,
-
         "x-amz-meta-owner-id": ownerId,
       },
 
@@ -105,15 +103,12 @@ export async function createDocumentUploadSession(
         {
           "Content-Type": input.mimeType,
         },
-
         {
           "x-amz-meta-document-id": documentId,
         },
-
         {
           "x-amz-meta-owner-id": ownerId,
         },
-
         ["content-length-range", input.sizeBytes, input.sizeBytes],
       ],
     });
@@ -143,7 +138,8 @@ export async function createDocumentUploadSession(
             UPDATE documents
             SET
               upload_status = 'failed',
-              last_error_code = 'UPLOAD_SESSION_CREATION_FAILED',
+              last_error_code =
+                'UPLOAD_SESSION_CREATION_FAILED',
               last_error_message = $2
             WHERE id = $1
           `,
@@ -155,8 +151,7 @@ export async function createDocumentUploadSession(
           ],
         )
         .catch(() => {
-          // Do not hide the original AWS/database error
-          // if updating the failure status also fails.
+          // Preserve the original error.
         });
     }
 
