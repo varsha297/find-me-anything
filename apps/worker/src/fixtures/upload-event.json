@@ -1,0 +1,32 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.5",
+      "eventSource": "aws:s3",
+      "awsRegion": "eu-north-1",
+      "eventTime": "2026-08-05T09:58:43.196Z",
+      "eventName": "ObjectCreated:Post",
+      "userIdentity": { "principalId": "AWS:AIDA44DFGHL7DGWD7Y74M" },
+      "requestParameters": { "sourceIPAddress": "106.222.202.211" },
+      "responseElements": {
+        "x-amz-request-id": "61GKAGC8TJWZBH4B",
+        "x-amz-id-2": "ZRWhrIBP67TSbMzquKp7KEwA2/xYf2jS1oaSSrzWV8vFvoawBe5BBv86pLQ52QszKvpXkJIDitrAooAuVkXIKjoy3fnjWnuVT/fixEbT2Bw="
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "findanything-original-file-uploaded",
+        "bucket": {
+          "name": "findanything-s3-bucket",
+          "ownerIdentity": { "principalId": "A33YXNTUVXUVV8" },
+          "arn": "arn:aws:s3:::findanything-s3-bucket"
+        },
+        "object": {
+          "key": "private/11111111-1111-4111-8111-111111111111/documents/146a514b-bef7-49db-8031-67ef0cef4d0c/original/Backend_Interview_Questions_1738419212.pdf",
+          "size": 7242887,
+          "eTag": "ac4edc0726f99bc2c2031a22f9f35d88",
+          "sequencer": "006A730950E8605C82"
+        }
+      }
+    }
+  ]
+}
