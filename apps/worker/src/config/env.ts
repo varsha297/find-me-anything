@@ -27,6 +27,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
 
   WORKER_ENABLED: booleanString.default(false),
+
+  OPENAI_API_KEY: z.string().min(1),
 });
 
 const parsed = envSchema.safeParse(process.env);

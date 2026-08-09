@@ -15,6 +15,6 @@
 
     "sourceMap": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/database/migrate.ts"],
   "exclude": ["node_modules", "dist"]
 }

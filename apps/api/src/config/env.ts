@@ -18,6 +18,8 @@ const environmentSchema = z.object({
 
   AWS_PROFILE: z.string().min(1).optional(),
 
+  OPENAI_API_KEY: z.string().min(1),
+
   UPLOAD_SESSION_EXPIRES_SECONDS: z.coerce
     .number()
     .int()

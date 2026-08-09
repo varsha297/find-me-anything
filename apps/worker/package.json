@@ -5,6 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/main.ts",
+    "verify:extract": "tsx src/scripts/verify-file-extraction.ts",
+    "verify:chunk": "tsx src/scripts/verify-document-chunking.ts",
+    "verify:store-chunks": "tsx src/scripts/verify-chunk-storage.ts",
+    "verify:embedding": "tsx src/scripts/verify-embedding.ts",
+    "verify:store-embeddings": "tsx src/scripts/verify-store-embeddings.ts",
     "start": "tsx src/main.ts",
     "test:event": "tsx src/scripts/test-s3-event.ts",
     "test:db": "tsx src/scripts/test-document-lookup.ts",
@@ -15,7 +20,10 @@
     "@aws-sdk/client-s3": "^3.1098.0",
     "@aws-sdk/client-sqs": "^3.0.0",
     "dotenv": "^17.0.0",
+    "openai": "^7.4.0",
+    "pdfjs-dist": "^6.2.108",
     "pg": "^8.22.0",
+    "pgvector": "^0.3.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
